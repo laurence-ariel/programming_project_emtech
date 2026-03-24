@@ -19,7 +19,17 @@ def sysadmin_init(sysadmin_name = "Agent Smith", sysadmin_hp = 100, sysadmin_en 
 
 def sysadmin_name_init(sysadmin_name = "Agent Smith"):
     sysadmin_name = sysadmin_name if sysadmin_name and sysadmin_name.strip() else "Agent Smith"
-    return sysadmin_name
+    return sysadmin_name 
+
+def game_over(hacker_hp, sysadmin_hp):
+    if hacker_hp <= 0 and sysadmin_hp <= 0:
+        return "Double KO! It's a tie!\n"
+    elif hacker_hp <= 0:
+        return "SysAdmin wins!\n"
+    elif sysadmin_hp <= 0:
+        return "Hacker wins!\n"
+    else:
+        return None
 
 hacker_stealth = False
 
@@ -46,7 +56,8 @@ def hacker_attacks(hacker_sequence): #TODO: make hacker_attacks() and sysadmin_a
     global hacker_stealth
     
     i = 0
-    while i < 3:
+    sequence_active = True
+    while i < 3 and sequence_active:
         val = int(hacker_sequence[i])
         hacker_sequence_skipped = False
         print(f"Hacker sequence {i+1}: attack {val}")
@@ -67,7 +78,7 @@ def hacker_attacks(hacker_sequence): #TODO: make hacker_attacks() and sysadmin_a
                 hacker_sequence_skipped = True
             else:
                 hacker_en += 20
-                hacker_en = max(hacker_en, 100)
+                hacker_en = min(hacker_en, 100)
                 print(f"Phishing scam! +20 energy to {hacker_name}! {hacker_en} / 100 energy")
 
         elif val == 3:  
@@ -83,6 +94,11 @@ def hacker_attacks(hacker_sequence): #TODO: make hacker_attacks() and sysadmin_a
 
         if hacker_sequence_skipped == True:
             print(f"Hacker sequence {i+1} skipped.")
+
+        round_result = game_over(hacker_hp, sysadmin_hp)
+        if round_result is not None:
+            print(round_result)
+            sequence_active = False
         i += 1
 
 def sysadmin_attacks(sysadmin_sequence): #TODO: make hacker_attacks() and sysadmin_attacks() run in parallel sequence
@@ -91,7 +107,8 @@ def sysadmin_attacks(sysadmin_sequence): #TODO: make hacker_attacks() and sysadm
     global hacker_stealth
 
     j = 0
-    while j < 3:
+    sequence_active = True
+    while j < 3 and sequence_active:
         val = int(sysadmin_sequence[j])
         sysadmin_sequence_skipped = False
         print(f"SysAdmin sequence {j+1}: attack {val}")
@@ -113,7 +130,7 @@ def sysadmin_attacks(sysadmin_sequence): #TODO: make hacker_attacks() and sysadm
                 sysadmin_sequence_skipped = True
             else:
                 sysadmin_en += 20
-                sysadmin_en = max(sysadmin_en, 100)
+                sysadmin_en = min(sysadmin_en, 100)
                 print(f"Reboot system! +20 energy to {sysadmin_name}! {sysadmin_en} / 100 energy")
         elif val == 3:  
             if sysadmin_en <= 10:
@@ -128,143 +145,62 @@ def sysadmin_attacks(sysadmin_sequence): #TODO: make hacker_attacks() and sysadm
 
         if sysadmin_sequence_skipped == True:
             print(f"SysAdmin sequence {j+1} skipped.")
+
+        round_result = game_over(hacker_hp, sysadmin_hp)
+        if round_result is not None:
+            print(round_result)
+            sequence_active = False
         j += 1
 
 
 hacker_stealth = False
 
-game_running = 0 # 0 == not running, 1 == default start, 2 == restart (resets hp and energy, keeps names), 3 == full reset (resets everything)
-#TODO: implement game_running == 2 and game_running == 3
+game_running = True 
 
+while game_running:
+    turn_number = 1
+    print("WELCOME to the Hacker vs SysAdmin Hacking Game!\n")
+    print("boilerplate rules and instructions here\n")
 
+    # phase 2 input/validation
+    hacker_name = input("Hacker name?: ")
+    hacker_name, hacker_hp, hacker_en = hacker_init(hacker_name)
 
-game_running = 1 #default start/game init
+    sysadmin_name = input("SysAdmin name?: ")
+    sysadmin_name, sysadmin_hp, sysadmin_en = sysadmin_init(sysadmin_name)
 
-while game_running != 0:
-    if game_running == 1:
-        turn_number = 1
+    print(f"Current Hacker: {hacker_name} vs Current SysAdmin: {sysadmin_name}\n")
 
-
-        print("WELCOME to the Hacker vs SysAdmin Hacking Game!\n")
-        print("boilerplate rules and instructions here\n")
-
-        hacker_name = input("Hacker name?: ")
-        hacker_name, hacker_hp, hacker_en = hacker_init(hacker_name)
-
-        sysadmin_name = input("SysAdmin name?: ")
-        sysadmin_name, sysadmin_hp, sysadmin_en = sysadmin_init(sysadmin_name)
-
-        print(f"Current Hacker: {hacker_name} vs Current SysAdmin: {sysadmin_name}\n")
-        # Phase 3: attack phase
-        while hacker_hp > 0 and sysadmin_hp > 0:
-            print(f"Round {turn_number}")
-            print(f"{hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy\n")
+    # Phase 3: attack phase
+    while hacker_hp > 0 and sysadmin_hp > 0:
+        print(f"Round {turn_number}")
+        print(f"{hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy\n")
+        hacker_sequence = input(f"{hacker_name}, enter your attack sequence: ")
+        while is_valid_sequence(hacker_sequence) == False:
+            print("Invalid sequence. Try again.")
             hacker_sequence = input(f"{hacker_name}, enter your attack sequence: ")
-            while is_valid_sequence(hacker_sequence) == False:
-                print("Invalid sequence. Try again.")
-                hacker_sequence = input(f"{hacker_name}, enter your attack sequence: ")
 
+        sysadmin_sequence = input(f"{sysadmin_name}, enter your attack sequence: ")
+        while is_valid_sequence(sysadmin_sequence) == False:
+            print("Invalid sequence. Try again.")
             sysadmin_sequence = input(f"{sysadmin_name}, enter your attack sequence: ")
-            while is_valid_sequence(sysadmin_sequence) == False:
-                print("Invalid sequence. Try again.")
-                sysadmin_sequence = input(f"{sysadmin_name}, enter your attack sequence: ")
 
-            hacker_attacks(hacker_sequence)
+        hacker_attacks(hacker_sequence)
+        if game_over(hacker_hp, sysadmin_hp) is None:
             sysadmin_attacks(sysadmin_sequence)
 
+        # phase 4 server event
+        if turn_number % 3 == 0 and game_over(hacker_hp, sysadmin_hp) is None:
+            print("Server overheats! -10 hp to both sides!")
+            hacker_hp -= 10
+            sysadmin_hp -= 10
+            print(f"{hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy")
 
-            if turn_number % 3 == 0:
-                print("Server overheats! -10 hp to both sides!")
-                hacker_hp -= 10
-                sysadmin_hp -= 10
-                print(f"{hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy")
+        turn_number += 1
 
-            turn_number += 1
-
-        print("Game over!\n")
-        print(f"Final status - {hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy\n")
-        if hacker_hp <= 0 and sysadmin_hp <= 0:
-            print("Double KO! It's a tie!")
-        elif hacker_hp <= 0:
-            print(f"{sysadmin_name} wins!")
-        elif sysadmin_hp <= 0:
-            print(f"{hacker_name} wins!")
-
-        
+    print("Game over!\n")
+    print(f"Final status - {hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy\n")
 
 
-        
-    elif game_running == 2:
-        pass
-        # TODO: implement game_running == 2 (resets hp and energy, keeps names)
-    elif game_running == 3:
-        pass
-        # TODO: implement game_running == 3 (resets everything)
-    elif game_running == 0:
-        print("Exiting game...")
-        game_running = 0
-    else: 
-        print("Invalid game state")
-        
+    game_running = False
 
-
-
-
-
-
-
-   
-
-"""
-    
-    Phase 3 Attack phase:
-
-    - Hacker first then admin
-    - Hacker: input 3 digit sequence of 1, 2, and 3
-        - 1: DDoS attack (costs 15 energy, -20 hp to sysadmin)
-        - 2: Phishing scam (restores 20 energy to hacker)
-        - 3: Stealth Mode (costs 10 energy, blocks firewall purge)
-    - SysAdmin: input 3 digit sequence of 1, 2, and 3
-        - 1: Firewall purge (costs 15 energy, -20 hp to hacker, blocked by stealth mode)
-        - 2: Reboot system (costs 10 hp, +20 energy to sysadmin (capped at 100))
-        - 3: Trace route (cost 10 energy, bypass stealth mode)
-
-    Each attack phase is done in 3 sequence per round
-    Eg: Hacker inputs 123, then sysadmin inputs 321,
-    then resolve the attacks in order 
-    (hacker attack 1, sysadmin attack 1, 
-    hacker attack 2, sysadmin attack 2, 
-    hacker attack 3, sysadmin attack 3)
-
-    
-    - real time (per sequence) update of HP and energy for both sides
-    - if hp of one side reaches 0, the other side wins and game ends (turn ends immediately)
-    - if hp of both sides reaches 0, double KO (turn ends immediately)
-"""
-
-"""
-    Sample turn:
-    Round 1
-    Hacker, enter your attack sequence: 123
-    SysAdmin, enter your attack sequence: 321
-
-    Sequence 1:
-    Neo uses DDoS attack! -20 hp to Agent Smith! 
-    Agent Smith uses Trace route! Bypasses Stealth Mode! 
-    Neo: 100 hp, 15 energy || Agent Smith: 80 hp, 20 energy
-    Sequence 2:
-    Neo uses Phishing scam! +20 energy to Neo! 
-    Agent Smith uses Reboot system! +20 energy to Agent Smith! 
-    Neo: 100 hp, 35 energy || Agent Smith: 80 hp, 40 energy
-    Sequence 3:
-    Neo uses Stealth Mode! Blocks Firewall purge! 
-    Agent Smith uses Firewall purge! Blocked by Stealth Mode!
-    Neo: 100 hp, 25 energy || Agent Smith: 80 hp, 25 energy 
-    """
-
-"""
-    Phase 4: server overheat
-    - Every 3 rounds, system overheats
-    - -10hp to both sides
-    - post-overheat status update
-"""
