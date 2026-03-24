@@ -50,107 +50,101 @@ def is_valid_sequence(sequence):
         return False
     return True
 
-def hacker_attacks(hacker_sequence): #TODO: make hacker_attacks() and sysadmin_attacks() run in parallel sequence
+def attack_handling(hacker_sequence, sysadmin_sequence):
     global hacker_name, hacker_hp, hacker_en
     global sysadmin_name, sysadmin_hp, sysadmin_en
     global hacker_stealth
-    
+
     i = 0
     sequence_active = True
+
     while i < 3 and sequence_active:
-        val = int(hacker_sequence[i])
+        hacker_val = int(hacker_sequence[i])
+        sysadmin_val = int(sysadmin_sequence[i])
         hacker_sequence_skipped = False
-        print(f"Hacker sequence {i+1}: attack {val}")
+        sysadmin_sequence_skipped = False
+        hacker_damage = 0
+        sysadmin_damage = 0
+
+        print(f"Sequence {i+1}:")
         time.sleep(1) # @NOTE subject to change, just want to add some delay for better UX, can remove or adjust as needed
-        if val == 1:
+
+        if hacker_val == 1:
             if hacker_en <= 15:
                 print("Frozen! Not enough energy")
                 hacker_sequence_skipped = True
-            else: 
+            else:
                 hacker_en -= 15
-                sysadmin_hp -= 20
-                print(f"DDos attack! -20 hp to {sysadmin_name}!")
-
-        elif val == 2:
-
+                hacker_damage = 20
+                print(f"{hacker_name} uses DDoS attack!")
+        elif hacker_val == 2:
             if hacker_hp <= 10:
                 print("Not enough HP")
                 hacker_sequence_skipped = True
             else:
                 hacker_en += 20
                 hacker_en = min(hacker_en, 100)
-                print(f"Phishing scam! +20 energy to {hacker_name}! {hacker_en} / 100 energy")
-
-        elif val == 3:  
-
+                print(f"{hacker_name} uses Phishing scam! +20 energy")
+        elif hacker_val == 3:
             if hacker_en <= 10:
                 print("Frozen! Not enough energy")
                 hacker_sequence_skipped = True
             else:
                 hacker_en -= 10
                 hacker_stealth = True
-                print("Stealth mode activated!")
-                #TODO: block SysAdmin's move 1 (firewall purge)
+                print(f"{hacker_name} uses Stealth Mode!")
 
-        if hacker_sequence_skipped == True:
-            print(f"Hacker sequence {i+1} skipped.")
-
-        round_result = game_over(hacker_hp, sysadmin_hp)
-        if round_result is not None:
-            print(round_result)
-            sequence_active = False
-        i += 1
-
-def sysadmin_attacks(sysadmin_sequence): #TODO: make hacker_attacks() and sysadmin_attacks() run in parallel sequence
-    global hacker_name, hacker_hp, hacker_en
-    global sysadmin_name, sysadmin_hp, sysadmin_en
-    global hacker_stealth
-
-    j = 0
-    sequence_active = True
-    while j < 3 and sequence_active:
-        val = int(sysadmin_sequence[j])
-        sysadmin_sequence_skipped = False
-        print(f"SysAdmin sequence {j+1}: attack {val}")
-        time.sleep(1) # @NOTE subject to change, just want to add some delay for better UX, can remove or adjust as needed
-        if val == 1:
+        if sysadmin_val == 1:
             if sysadmin_en <= 15:
                 print("Frozen! Not enough energy")
                 sysadmin_sequence_skipped = True
-            else: 
+            else:
+                sysadmin_en -= 15
                 if hacker_stealth == True:
-                    print("Firewall purge! Blocked by Stealth Mode!")
+                    print(f"{sysadmin_name} uses Firewall purge! Blocked by Stealth Mode!")
                 else:
-                    sysadmin_en -= 15
-                    hacker_hp -= 20
-                    print(f"Firewall purge! -20 hp to {hacker_name}! {sysadmin_en} energy left")
-        elif val == 2:
+                    sysadmin_damage = 20
+                    print(f"{sysadmin_name} uses Firewall purge!")
+        elif sysadmin_val == 2:
             if sysadmin_hp <= 10:
                 print("Not enough HP")
                 sysadmin_sequence_skipped = True
             else:
                 sysadmin_en += 20
                 sysadmin_en = min(sysadmin_en, 100)
-                print(f"Reboot system! +20 energy to {sysadmin_name}! {sysadmin_en} / 100 energy")
-        elif val == 3:  
+                print(f"{sysadmin_name} uses Reboot system! +20 energy")
+        elif sysadmin_val == 3:
             if sysadmin_en <= 10:
                 print("Frozen! Not enough energy")
                 sysadmin_sequence_skipped = True
             else:
                 sysadmin_en -= 10
-                print("Trace route! Bypasses stealth mode!")
+                print(f"{sysadmin_name} uses Trace route! Bypasses Stealth Mode!")
                 if hacker_stealth == True:
                     hacker_stealth = False
                     print("Stealth mode bypassed!")
 
+        if hacker_damage > 0:
+            sysadmin_hp -= hacker_damage
+            print(f"DDoS attack deals -20 hp to {sysadmin_name}!")
+
+        if sysadmin_damage > 0:
+            hacker_hp -= sysadmin_damage
+            print(f"Firewall purge deals -20 hp to {hacker_name}!")
+
+        if hacker_sequence_skipped == True:
+            print(f"Hacker sequence {i+1} skipped.")
+
         if sysadmin_sequence_skipped == True:
-            print(f"SysAdmin sequence {j+1} skipped.")
+            print(f"SysAdmin sequence {i+1} skipped.")
+
+        print(f"{hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy")
 
         round_result = game_over(hacker_hp, sysadmin_hp)
         if round_result is not None:
             print(round_result)
             sequence_active = False
-        j += 1
+        i += 1
 
 
 hacker_stealth = False
@@ -185,9 +179,7 @@ while game_running:
             print("Invalid sequence. Try again.")
             sysadmin_sequence = input(f"{sysadmin_name}, enter your attack sequence: ")
 
-        hacker_attacks(hacker_sequence)
-        if game_over(hacker_hp, sysadmin_hp) is None:
-            sysadmin_attacks(sysadmin_sequence)
+        attack_handling(hacker_sequence, sysadmin_sequence)
 
         # phase 4 server event
         if turn_number % 3 == 0 and game_over(hacker_hp, sysadmin_hp) is None:
