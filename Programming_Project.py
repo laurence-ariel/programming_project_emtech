@@ -83,6 +83,7 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
                 print("Not enough HP")
                 hacker_sequence_skipped = True
             else:
+                hacker_hp -= 10
                 hacker_en += 20
                 hacker_en = min(hacker_en, 100)
                 print(f"{hacker_name} uses Phishing scam! +20 energy")
@@ -111,6 +112,7 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
                 print("Not enough HP\n")
                 sysadmin_sequence_skipped = True
             else:
+                sysadmin_hp -= 10
                 sysadmin_en += 20
                 sysadmin_en = min(sysadmin_en, 100)
                 print(f"{sysadmin_name} uses Reboot system! +20 energy\n")
@@ -151,7 +153,14 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
 
 hacker_stealth = False
 
-game_running = True 
+game_running = 1
+
+"""
+Upon match conclusion, the program must prompt players to either
+1. Reboot (play again): same name but stats reset to default
+2. Shutdown (exit): end the program
+
+"""
 
 while game_running:
     turn_number = 1
@@ -199,4 +208,15 @@ while game_running:
 
     print(f"Final status - {hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy\n")
 
-    game_running = False
+    play_again = input("Reboot the competition or Shut Down? (R/S): ")
+
+    while play_again.lower() != "r" and play_again.lower() != "s":
+        print("Invalid input! Please enter 'R' to reboot or 'S' to shut down.\n")
+        play_again = input("Reboot the competition or Shut Down? (R/S): ")
+
+    if play_again.lower() == "r":
+        print("\n Rebooting the competition...\n")
+        time.sleep(2)
+    else:
+        print("Shutting down the program. Goodbye!")
+        game_running = 0
