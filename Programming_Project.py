@@ -1,12 +1,5 @@
 import time 
 
-green = "\033[92m" # default text color for hacker
-blue = "\033[94m" # default text color for sysadmin
-orange_red_bg = "\033[41m" # for server event bg
-cyan_bg = "\033[46m" # for frozen state bg 
-yellow = "\033[93m" # for skipped sequence bg
-reset = "\033[0m" # reset text color and bg to default
-
 
 # Phase 0: program init
 def hacker_init(hacker_name = "Neo", hacker_hp = 100, hacker_en = 30): #init hacker default values 
@@ -31,9 +24,9 @@ def game_over(hacker_hp, sysadmin_hp):
     if hacker_hp <= 0 and sysadmin_hp <= 0:
         return "Double KO! It's a tie!\n"
     elif hacker_hp <= 0:
-        return f"{blue}SysAdmin wins!{reset}\n"
+        return "SysAdmin wins!\n"
     elif sysadmin_hp <= 0:
-        return f"{green}Hacker wins!{reset}\n"
+        return "Hacker wins!\n"
     else:
         return None
 
@@ -79,74 +72,74 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
 
         if hacker_val == 1:
             if hacker_en <= 15:
-                print(f"{cyan_bg}Frozen! Not enough energy{reset}")
+                print("Frozen! Not enough energy")
                 hacker_sequence_skipped = True
             else:
                 hacker_en -= 15
                 hacker_damage = 20
-                print(f"{green}{hacker_name} uses DDoS attack!{reset}")
+                print(f"{hacker_name} uses DDoS attack!")
         elif hacker_val == 2:
             if hacker_hp <= 10:
-                print(f"{yellow}Not enough HP{reset}")
+                print("Not enough HP")
                 hacker_sequence_skipped = True
             else:
                 hacker_en += 20
                 hacker_en = min(hacker_en, 100)
-                print(f"{green}{hacker_name} uses Phishing scam! +20 energy{reset}")
+                print(f"{hacker_name} uses Phishing scam! +20 energy")
         elif hacker_val == 3:
             if hacker_en <= 10:
-                print(f"{cyan_bg}Frozen! Not enough energy{reset}")
+                print("Frozen! Not enough energy")
                 hacker_sequence_skipped = True
             else:
                 hacker_en -= 10
                 hacker_stealth = True
-                print(f"{green}{hacker_name} uses Stealth Mode!{reset}")
+                print(f"{hacker_name} uses Stealth Mode!")
 
         if sysadmin_val == 1:
             if sysadmin_en <= 15:
-                print(f"{cyan_bg}Frozen! Not enough energy{reset} \n")
+                print("Frozen! Not enough energy\n")
                 sysadmin_sequence_skipped = True
             else:
                 sysadmin_en -= 15
                 if hacker_stealth == True:
-                    print(f"{blue}{sysadmin_name} uses Firewall purge! Blocked by Stealth Mode!{reset} \n")
+                    print(f"{sysadmin_name} uses Firewall purge! Blocked by Stealth Mode!\n")
                 else:
                     sysadmin_damage = 20
-                    print(f"{blue}{sysadmin_name} uses Firewall purge!{reset}\n")
+                    print(f"{sysadmin_name} uses Firewall purge!\n")
         elif sysadmin_val == 2:
             if sysadmin_hp <= 10:
-                print(f"{yellow}Not enough HP{reset} \n")
+                print("Not enough HP\n")
                 sysadmin_sequence_skipped = True
             else:
                 sysadmin_en += 20
                 sysadmin_en = min(sysadmin_en, 100)
-                print(f"{blue}{sysadmin_name} uses Reboot system! +20 energy{reset} \n")
+                print(f"{sysadmin_name} uses Reboot system! +20 energy\n")
         elif sysadmin_val == 3:
             if sysadmin_en <= 10:
-                print(f"{cyan_bg}Frozen! Not enough energy{reset}")
+                print("Frozen! Not enough energy")
                 sysadmin_sequence_skipped = True
             else:
                 sysadmin_en -= 10
-                print(f"{blue}{sysadmin_name} uses Trace route! Bypasses Stealth Mode!{reset} \n")
+                print(f"{sysadmin_name} uses Trace route! Bypasses Stealth Mode!\n")
                 if hacker_stealth == True:
                     hacker_stealth = False
-                    print(f"{blue}Stealth mode bypassed!{reset}")
+                    print("Stealth mode bypassed!")
 
         if hacker_damage > 0:
             sysadmin_hp -= hacker_damage
-            print(f"{green}DDoS attack deals -20 hp to {sysadmin_name}!{reset}")
+            print(f"DDoS attack deals -20 hp to {sysadmin_name}!")
 
         if sysadmin_damage > 0:
             hacker_hp -= sysadmin_damage
-            print(f"{blue}Firewall purge deals -20 hp to {hacker_name}!{reset}")
+            print(f"Firewall purge deals -20 hp to {hacker_name}!")
 
         if hacker_sequence_skipped == True:
-            print(f"{yellow}Hacker sequence {i + 1} skipped.{reset}")
+            print(f"Hacker sequence {i + 1} skipped.")
 
         if sysadmin_sequence_skipped == True:
-            print(f"{yellow}SysAdmin sequence {i + 1} skipped.{reset}")
+            print(f"SysAdmin sequence {i + 1} skipped.")
 
-        print(f"{green}{hacker_name}: {hacker_hp} hp, {hacker_en} energy{reset} || {blue}{sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy{reset} \n")
+        print(f"{hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy\n")
 
         round_result = game_over(hacker_hp, sysadmin_hp)
         if round_result is not None:
@@ -172,12 +165,12 @@ while game_running:
     sysadmin_name = input("SysAdmin name?: ")
     sysadmin_name, sysadmin_hp, sysadmin_en = sysadmin_init(sysadmin_name)
 
-    print(f"Current Hacker: {green}{hacker_name}{reset} vs Current SysAdmin: {blue}{sysadmin_name}{reset}\n")
+    print(f"Current Hacker: {hacker_name} vs Current SysAdmin: {sysadmin_name}\n")
 
     # Phase 3: attack phase
     while hacker_hp > 0 and sysadmin_hp > 0:
         print(f"Round {turn_number}")
-        print(f"{green}{hacker_name}: {hacker_hp} hp, {hacker_en} energy{reset} || {blue}{sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy{reset}\n")
+        print(f"{hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy\n")
         hacker_sequence = input(f"{hacker_name}, enter your attack sequence: ")
         while is_valid_sequence(hacker_sequence) == False:
             print("Invalid sequence. Try again.")
@@ -192,10 +185,10 @@ while game_running:
 
         # phase 4 server event
         if turn_number % 3 == 0 and game_over(hacker_hp, sysadmin_hp) is None:
-            print(f"\n{orange_red_bg} Server overheats! -10 hp to both sides! {reset}\n")
+            print("\nServer overheats! -10 hp to both sides!\n")
             hacker_hp -= 10
             sysadmin_hp -= 10
-            print(f"{green}{hacker_name}: {hacker_hp} hp, {hacker_en} energy{reset} || {blue}{sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy{reset}")
+            print(f"{hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy")
 
         turn_number += 1
 
@@ -204,6 +197,6 @@ while game_running:
     hacker_hp = max(0, hacker_hp)
     sysadmin_hp = max(0, sysadmin_hp)
 
-    print(f"Final status - {green}{hacker_name}: {hacker_hp} hp, {hacker_en} energy{reset} || {blue}{sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy{reset}\n")
+    print(f"Final status - {hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy\n")
 
     game_running = False
