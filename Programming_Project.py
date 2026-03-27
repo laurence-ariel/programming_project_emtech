@@ -155,12 +155,6 @@ hacker_stealth = False
 
 game_running = 1
 
-"""
-Upon match conclusion, the program must prompt players to either
-1. Reboot (play again): same name but stats reset to default
-2. Shutdown (exit): end the program
-
-"""
 
 while game_running:
     turn_number = 1
