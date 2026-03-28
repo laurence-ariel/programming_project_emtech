@@ -122,6 +122,7 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
                 sysadmin_sequence_skipped = True
             else:
                 sysadmin_en -= 10
+                hacker_hp -= 10
                 print(f"{sysadmin_name} uses Trace route! Bypasses Stealth Mode!\n")
                 if hacker_stealth == True:
                     hacker_stealth = False
@@ -155,8 +156,7 @@ hacker_stealth = False
 
 game_running = 1
 
-
-while game_running:
+while game_running == 1:
     turn_number = 1
     print("WELCOME to the Hacker vs SysAdmin Hacking Game!\n")
     print("boilerplate rules and instructions here\n")
@@ -164,6 +164,7 @@ while game_running:
     # phase 2 input/validation
     hacker_name = input("Hacker name?: ")
     hacker_name, hacker_hp, hacker_en = hacker_init(hacker_name)
+    
 
     sysadmin_name = input("SysAdmin name?: ")
     sysadmin_name, sysadmin_hp, sysadmin_en = sysadmin_init(sysadmin_name)
@@ -174,12 +175,15 @@ while game_running:
     while hacker_hp > 0 and sysadmin_hp > 0:
         print(f"Round {turn_number}")
         print(f"{hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy\n")
+
         hacker_sequence = input(f"{hacker_name}, enter your attack sequence: ")
+
         while is_valid_sequence(hacker_sequence) == False:
             print("Invalid sequence. Try again.")
             hacker_sequence = input(f"{hacker_name}, enter your attack sequence: ")
 
         sysadmin_sequence = input(f"{sysadmin_name}, enter your attack sequence: ")
+
         while is_valid_sequence(sysadmin_sequence) == False:
             print("Invalid sequence. Try again.")
             sysadmin_sequence = input(f"{sysadmin_name}, enter your attack sequence: ")
@@ -203,6 +207,63 @@ while game_running:
     print(f"Final status - {hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy\n")
 
     play_again = input("Reboot the competition or Shut Down? (R/S): ")
+    while play_again.lower() != "r" and play_again.lower() != "s":
+        print("Invalid input! Please enter 'R' to reboot or 'S' to shut down.\n")
+        play_again = input("Reboot the competition or Shut Down? (R/S): ")
+
+    if play_again.lower() == "r":
+        print("\n Rebooting the competition...\n")
+        game_running = 2
+        time.sleep(2)
+
+    else:
+        print("Shutting down the program. Goodbye!")
+        game_running = 0
+
+while game_running == 2: 
+    turn_number = 1
+
+    hacker_name, hacker_hp, hacker_en = hacker_init()
+    sysadmin_name, sysadmin_hp, sysadmin_en = sysadmin_init()
+
+    print(f"Current Hacker: {hacker_name} vs Current SysAdmin: {sysadmin_name}\n")
+
+    # Phase 3: attack phase of rebooted game
+    while hacker_hp > 0 and sysadmin_hp > 0:
+        print(f"Round {turn_number}")
+        print(f"{hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy\n")
+
+        hacker_sequence = input(f"{hacker_name}, enter your attack sequence: ")
+
+        while is_valid_sequence(hacker_sequence) == False:
+            print("Invalid sequence. Try again.")
+            hacker_sequence = input(f"{hacker_name}, enter your attack sequence: ")
+
+        sysadmin_sequence = input(f"{sysadmin_name}, enter your attack sequence: ")
+
+        while is_valid_sequence(sysadmin_sequence) == False:
+            print("Invalid sequence. Try again.")
+            sysadmin_sequence = input(f"{sysadmin_name}, enter your attack sequence: ")
+
+        attack_handling(hacker_sequence, sysadmin_sequence)
+
+        # phase 4 server event of rebooted game
+        if turn_number % 3 == 0 and game_over(hacker_hp, sysadmin_hp) is None:
+            print("\nServer overheats! -10 hp to both sides!\n")
+            hacker_hp -= 10
+            sysadmin_hp -= 10
+            print(f"Overheat report: {hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy")
+
+        turn_number += 1
+
+    print("Game over!\n")
+
+    hacker_hp = max(0, hacker_hp)
+    sysadmin_hp = max(0, sysadmin_hp)
+
+    print(f"Final status - {hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy\n")
+
+    play_again = input("Reboot the competition or Shut Down? (R/S): ")
 
     while play_again.lower() != "r" and play_again.lower() != "s":
         print("Invalid input! Please enter 'R' to reboot or 'S' to shut down.\n")
@@ -210,6 +271,7 @@ while game_running:
 
     if play_again.lower() == "r":
         print("\n Rebooting the competition...\n")
+        game_running = 2
         time.sleep(2)
     else:
         print("Shutting down the program. Goodbye!")
