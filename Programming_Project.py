@@ -64,10 +64,9 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
         hacker_sequence_skipped = False
         sysadmin_sequence_skipped = False
 
-        hacker_damage = 0
-        sysadmin_damage = 0
 
         print(f"Sequence {i + 1}:")
+        
         time.sleep(1) 
 
         if hacker_val == 1:
@@ -76,8 +75,8 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
                 hacker_sequence_skipped = True
             else:
                 hacker_en -= 15
-                hacker_damage = 20
-                print(f"{hacker_name} uses DDoS attack!")
+                sysadmin_hp -= 20
+                print(f"Hacker {hacker_name} uses DDoS attack! -20 hp to SysAdmin {sysadmin_name}")
         elif hacker_val == 2:
             if hacker_hp <= 10:
                 print("Not enough HP")
@@ -102,11 +101,14 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
                 sysadmin_sequence_skipped = True
             else:
                 sysadmin_en -= 15
+                
                 if hacker_stealth == True:
-                    print(f"{sysadmin_name} uses Firewall purge! Blocked by Stealth Mode!\n")
+                    print(f"{sysadmin_name} uses Firewall purge! Blocked by Hacker {hacker_name} Stealth Mode!\n")
                 else:
-                    sysadmin_damage = 20
-                    print(f"{sysadmin_name} uses Firewall purge!\n")
+                    hacker_hp -= 20
+                    max(0, hacker_hp)
+                    print(f"{sysadmin_name} uses Firewall purge! -20 hp to Hacker {hacker_name}! \n")
+
         elif sysadmin_val == 2:
             if sysadmin_hp <= 10:
                 print("Not enough HP\n")
@@ -116,6 +118,7 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
                 sysadmin_en += 20
                 sysadmin_en = min(sysadmin_en, 100)
                 print(f"{sysadmin_name} uses Reboot system! +20 energy\n")
+
         elif sysadmin_val == 3:
             if sysadmin_en <= 10:
                 print("Frozen! Not enough energy")
@@ -123,18 +126,11 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
             else:
                 sysadmin_en -= 10
                 hacker_hp -= 10
-                print(f"{sysadmin_name} uses Trace route! Bypasses Stealth Mode!\n")
+                hacker_hp = max(0, hacker_hp)
+                print(f"{sysadmin_name} uses Trace route!\n")
                 if hacker_stealth == True:
                     hacker_stealth = False
-                    print("Stealth mode bypassed!")
-
-        if hacker_damage > 0:
-            sysadmin_hp -= hacker_damage
-            print(f"DDoS attack deals -20 hp to {sysadmin_name}!")
-
-        if sysadmin_damage > 0:
-            hacker_hp -= sysadmin_damage
-            print(f"Firewall purge deals -20 hp to {hacker_name}!")
+                    print(f"Bypassed Hacker {hacker_name} Stealth Mode!\n")
 
         if hacker_sequence_skipped == True:
             print(f"Hacker sequence {i + 1} skipped.")
@@ -173,7 +169,7 @@ while game_running == 1:
 
     # Phase 3: attack phase
     while hacker_hp > 0 and sysadmin_hp > 0:
-        print(f"Round {turn_number}")
+        print(f"Round {turn_number}: ", end="")
         print(f"{hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy\n")
 
         hacker_sequence = input(f"{hacker_name}, enter your attack sequence: ")
@@ -207,8 +203,9 @@ while game_running == 1:
     print(f"Final status - {hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy\n")
 
     play_again = input("Reboot the competition or Shut Down? (R/S): ")
+
     while play_again.lower() != "r" and play_again.lower() != "s":
-        print("Invalid input! Please enter 'R' to reboot or 'S' to shut down.\n")
+        print("Invalid input! Enter 'R' to reboot or 'S' to shut down.\n")
         play_again = input("Reboot the competition or Shut Down? (R/S): ")
 
     if play_again.lower() == "r":
@@ -223,8 +220,8 @@ while game_running == 1:
 while game_running == 2: 
     turn_number = 1
 
-    hacker_name, hacker_hp, hacker_en = hacker_init()
-    sysadmin_name, sysadmin_hp, sysadmin_en = sysadmin_init()
+    hacker_name, hacker_hp, hacker_en = hacker_init(hacker_name)
+    sysadmin_name, sysadmin_hp, sysadmin_en = sysadmin_init(sysadmin_name)
 
     print(f"Current Hacker: {hacker_name} vs Current SysAdmin: {sysadmin_name}\n")
 
