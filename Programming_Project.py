@@ -61,9 +61,6 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
         hacker_val = int(hacker_sequence[i])
         sysadmin_val = int(sysadmin_sequence[i])
 
-        #hacker_sequence_skipped = False
-        #sysadmin_sequence_skipped = False
-
         print(f"Sequence {i + 1}:")
         
         time.sleep(1) 
@@ -71,7 +68,6 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
         if hacker_val == 1:
             if hacker_en <= 15:
                 print(f"Frozen, Not enough energy; Hacker {hacker_name} sequence {i + 1} skipped")
-                #hacker_sequence_skipped = True
             else:
                 hacker_en -= 15
                 sysadmin_hp -= 20
@@ -80,7 +76,6 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
         elif hacker_val == 2:
             if hacker_hp <= 10:
                 print(f"Not enough HP, Hacker {hacker_name} sequence {i + 1} skipped")
-                #hacker_sequence_skipped = True
             else:
                 hacker_hp -= 10
                 hacker_en += 20
@@ -90,7 +85,6 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
         elif hacker_val == 3:
             if hacker_en <= 10:
                 print(f"Frozen, Not enough energy; Hacker {hacker_name} sequence {i + 1} skipped")
-                #hacker_sequence_skipped = True
             else:
                 hacker_en -= 10
                 hacker_stealth = True
@@ -99,7 +93,6 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
         if sysadmin_val == 1:
             if sysadmin_en <= 15:
                 print(f"Frozen, Not enough energy; SysAdmin {sysadmin_name} sequence {i + 1} skipped \n ")
-                #sysadmin_sequence_skipped = True
             else:
                 sysadmin_en -= 15
 
@@ -113,7 +106,6 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
         elif sysadmin_val == 2:
             if sysadmin_hp <= 10:
                 print(f"Not enough HP, SysAdmin {sysadmin_name} sequence {i + 1} skipped \n")
-                #sysadmin_sequence_skipped = True
             else:
                 sysadmin_hp -= 10
                 sysadmin_en += 20
@@ -123,7 +115,6 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
         elif sysadmin_val == 3:
             if sysadmin_en <= 10:
                 print(f"Frozen, Not enough energy; SysAdmin {sysadmin_name} sequence {i + 1} skipped \n")
-                #sysadmin_sequence_skipped = True
             else:
                 sysadmin_en -= 10
                 hacker_hp -= 10
@@ -226,7 +217,7 @@ while game_running == 1:
 
     play_again = input("Would you like to reboot the competition or escape to the real world? (R/E): ")
 
-    while play_again.lower() != "r" and play_again.lower() != "s":
+    while play_again.lower() != "r" and play_again.lower() != "e":
         print("Invalid input, enter 'R' to reboot or 'E' to escape.\n")
         play_again = input("Would you like to reboot the competiton or escape to the real world? (R/E): ")
 
