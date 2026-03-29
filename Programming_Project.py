@@ -156,7 +156,7 @@ while game_running == 1:
     print("                                    (Each attack sequence must be a 3 digit number, a mix of the numbers 1, 2, and 3. Nothing more, nothing less.")
     print("                                    1 = DDoS attack, 2 = Phishing scam, 3 = Stealth mode for Hacker")
     print("                                    1 = Firewall purge, 2 = Reboot system, 3 = Trace route for SysAdmin")
-    print("                       - Each sequence number correstponds to an attack that goes against your opponent")
+    print("                       - Each sequence number corresponds to an attack that goes against your opponent")
     print("                       - Play the right attacks. In this game, you must make sure your opponent loses their HP first")
     print("                       - If you run out of energy, you can't perform the attack and you will be frozen for that sequence")
     print("                       - Every 3 turns, the server will overheat, causing -10 HP to both sides")
