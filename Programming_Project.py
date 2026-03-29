@@ -127,10 +127,12 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
                 sysadmin_en -= 10
                 hacker_hp -= 10
                 hacker_hp = max(0, hacker_hp)
-                print(f"{sysadmin_name} uses Trace route!\n")
+                print(f"SysAdmin {sysadmin_name} uses Trace route!", end=" ")
                 if hacker_stealth == True:
                     hacker_stealth = False
-                    print(f"Bypassed Hacker {hacker_name} Stealth Mode!\n")
+                    print(f"Bypassed Hacker {hacker_name} Stealth Mode! -10 hp to {hacker_name} \n")
+                else:
+                    print(f"-10 hp to Hacker {hacker_name} \n")
 
         if hacker_sequence_skipped == True:
             print(f"Hacker sequence {i + 1} skipped.")
@@ -146,6 +148,7 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
             sequence_active = False
 
         i += 1
+        hacker_stealth = False
 
 
 hacker_stealth = False
@@ -246,7 +249,7 @@ while game_running == 2:
 
         # phase 4 server event of rebooted game
         if turn_number % 3 == 0 and game_over(hacker_hp, sysadmin_hp) is None:
-            print("\nServer overheats! -10 hp to both sides!\n")
+            print("\nServer overheats! -10 hp to both sides!")
             hacker_hp -= 10
             sysadmin_hp -= 10
             print(f"Overheat report: {hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy")
