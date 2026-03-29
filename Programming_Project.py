@@ -61,9 +61,6 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
         hacker_val = int(hacker_sequence[i])
         sysadmin_val = int(sysadmin_sequence[i])
 
-        #hacker_sequence_skipped = False
-        #sysadmin_sequence_skipped = False
-
         print(f"Sequence {i + 1}:")
         
         time.sleep(1) 
@@ -71,59 +68,53 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
         if hacker_val == 1:
             if hacker_en <= 15:
                 print(f"Frozen, Not enough energy; Hacker {hacker_name} sequence {i + 1} skipped")
-                #hacker_sequence_skipped = True
             else:
                 hacker_en -= 15
                 sysadmin_hp -= 20
-                print(f"Hacker {hacker_name} uses DDoS attack, -20 hp to SysAdmin {sysadmin_name}")
+                print(f"Hacker {hacker_name} uses DDoS attack, -20 HP to SysAdmin {sysadmin_name}")
 
         elif hacker_val == 2:
             if hacker_hp <= 10:
                 print(f"Not enough HP, Hacker {hacker_name} sequence {i + 1} skipped")
-                #hacker_sequence_skipped = True
             else:
                 hacker_hp -= 10
                 hacker_en += 20
                 hacker_en = min(hacker_en, 100)
-                print(f"{hacker_name} uses Phishing scam; +20 energy")
+                print(f"Hacker {hacker_name} uses Phishing scam; +20 energy, -10 HP to self")
 
         elif hacker_val == 3:
             if hacker_en <= 10:
                 print(f"Frozen, Not enough energy; Hacker {hacker_name} sequence {i + 1} skipped")
-                #hacker_sequence_skipped = True
             else:
                 hacker_en -= 10
                 hacker_stealth = True
-                print(f"{hacker_name} uses Stealth Mode for sequence {i + 1}")
+                print(f"Hacker {hacker_name} uses Stealth Mode for sequence {i + 1}")
 
         if sysadmin_val == 1:
             if sysadmin_en <= 15:
                 print(f"Frozen, Not enough energy; SysAdmin {sysadmin_name} sequence {i + 1} skipped \n ")
-                #sysadmin_sequence_skipped = True
             else:
                 sysadmin_en -= 15
 
                 if hacker_stealth == True:
-                    print(f"{sysadmin_name} uses Firewall purge, blocked by Hacker {hacker_name} Stealth Mode \n")
+                    print(f"SysAdmin {sysadmin_name} uses Firewall purge, blocked by Hacker {hacker_name} Stealth Mode \n")
                 else:
                     hacker_hp -= 20
                     max(0, hacker_hp)
-                    print(f"{sysadmin_name} uses Firewall purge, -20 hp to Hacker {hacker_name} \n ")
+                    print(f"SysAdmin {sysadmin_name} uses Firewall purge, -20 HP to Hacker {hacker_name} \n ")
 
         elif sysadmin_val == 2:
             if sysadmin_hp <= 10:
                 print(f"Not enough HP, SysAdmin {sysadmin_name} sequence {i + 1} skipped \n")
-                #sysadmin_sequence_skipped = True
             else:
                 sysadmin_hp -= 10
                 sysadmin_en += 20
                 sysadmin_en = min(sysadmin_en, 100)
-                print(f"{sysadmin_name} uses Reboot system, +20 energy, -10 hp to self \n")
+                print(f"SysAdmin {sysadmin_name} uses Reboot system, +20 energy, -10 HP to self \n")
 
         elif sysadmin_val == 3:
             if sysadmin_en <= 10:
                 print(f"Frozen, Not enough energy; SysAdmin {sysadmin_name} sequence {i + 1} skipped \n")
-                #sysadmin_sequence_skipped = True
             else:
                 sysadmin_en -= 10
                 hacker_hp -= 10
@@ -131,11 +122,11 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
                 print(f"SysAdmin {sysadmin_name} uses Trace route,", end=" ")
                 if hacker_stealth == True:
                     hacker_stealth = False
-                    print(f"bypassing Hacker {hacker_name} Stealth Mode; -10 hp to {hacker_name} \n")
+                    print(f"bypassing Hacker {hacker_name} Stealth Mode; -10 HP to {hacker_name} \n")
                 else:
-                    print(f"-10 hp to Hacker {hacker_name} \n")
+                    print(f"-10 HP to Hacker {hacker_name} \n")
 
-        print(f"{hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy\n")
+        print(f"{hacker_name}: {hacker_hp} HP, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} HP, {sysadmin_en} energy\n")
 
         round_result = game_over(hacker_hp, sysadmin_hp)
         if round_result is not None:
@@ -168,7 +159,7 @@ while game_running == 1:
     print("                       - Each sequence number correstponds to an attack that goes against your opponent")
     print("                       - Play the right attacks. In this game, you must make sure your opponent loses their HP first")
     print("                       - If you run out of energy, you can't perform the attack and you will be frozen for that sequence")
-    print("                       - Every 3 turns, the server will overheat, causing -10 hp to both sides")
+    print("                       - Every 3 turns, the server will overheat, causing -10 HP to both sides")
     print("")
     print("---------------------------------------------------------------")
     print("---- May the Divine steer your fate towards the better --------")
@@ -190,7 +181,7 @@ while game_running == 1:
     # Phase 3: attack phase
     while hacker_hp > 0 and sysadmin_hp > 0:
         print(f"=========================== Round {turn_number} =========================== ")
-        print(f"{hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy\n")
+        print(f"{hacker_name}: {hacker_hp} HP, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} HP, {sysadmin_en} energy\n")
 
         hacker_sequence = input(f"{hacker_name}, enter your attack sequence: ")
 
@@ -210,10 +201,10 @@ while game_running == 1:
 
         # phase 4 server event
         if turn_number % 3 == 0 and game_over(hacker_hp, sysadmin_hp) is None:
-            print("\nServer overheats, -10 hp to both sides\n")
+            print("\nServer overheats, -10 HP to both sides\n")
             hacker_hp -= 10
             sysadmin_hp -= 10
-            print(f"Overheat report: {hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy")
+            print(f"Overheat report: {hacker_name}: {hacker_hp} HP, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} HP, {sysadmin_en} energy")
 
         turn_number += 1
 
@@ -222,11 +213,11 @@ while game_running == 1:
     hacker_hp = max(0, hacker_hp)
     sysadmin_hp = max(0, sysadmin_hp)
 
-    print(f"Final status - {hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy\n")
+    print(f"Final status - {hacker_name}: {hacker_hp} HP, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} HP, {sysadmin_en} energy\n")
 
     play_again = input("Would you like to reboot the competition or escape to the real world? (R/E): ")
 
-    while play_again.lower() != "r" and play_again.lower() != "s":
+    while play_again.lower() != "r" and play_again.lower() != "e":
         print("Invalid input, enter 'R' to reboot or 'E' to escape.\n")
         play_again = input("Would you like to reboot the competiton or escape to the real world? (R/E): ")
 
@@ -250,7 +241,7 @@ while game_running == 2:
     # Phase 3: attack phase of rebooted game
     while hacker_hp > 0 and sysadmin_hp > 0:
         print(f"=========================== Round {turn_number} =========================== ")
-        print(f"{hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy\n")
+        print(f"{hacker_name}: {hacker_hp} HP, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} HP, {sysadmin_en} energy\n")
 
         hacker_sequence = input(f"Hacker {hacker_name}, enter your attack sequence: ")
 
@@ -270,10 +261,10 @@ while game_running == 2:
 
         # phase 4 server event of rebooted game
         if turn_number % 3 == 0 and game_over(hacker_hp, sysadmin_hp) is None:
-            print("Server overheats, -10 hp to both sides")
+            print("Server overheats, -10 HP to both sides")
             hacker_hp -= 10
             sysadmin_hp -= 10
-            print(f"Overheat report: {hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy")
+            print(f"Overheat report: {hacker_name}: {hacker_hp} HP, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} HP, {sysadmin_en} energy")
 
         turn_number += 1
 
@@ -282,7 +273,7 @@ while game_running == 2:
     hacker_hp = max(0, hacker_hp)
     sysadmin_hp = max(0, sysadmin_hp)
 
-    print(f"Final status - {hacker_name}: {hacker_hp} hp, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} hp, {sysadmin_en} energy\n")
+    print(f"Final status - {hacker_name}: {hacker_hp} HP, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} HP, {sysadmin_en} energy\n")
 
     play_again = input("Would you like to reboot the competition or escape to the real world? (R/E): ")
 
