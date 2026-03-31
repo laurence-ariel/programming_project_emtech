@@ -74,9 +74,6 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
                 print(f"Hacker {hacker_name} uses DDoS attack, -20 HP to SysAdmin {sysadmin_name}")
 
         elif hacker_val == 2:
-            #if hacker_hp <= 10:
-            #    print(f"Not enough HP, Hacker {hacker_name} sequence {i + 1} skipped")
-            #else:
             hacker_hp -= 10
             hacker_en += 20
             hacker_en = min(hacker_en, 100)
@@ -104,9 +101,6 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
                     print(f"SysAdmin {sysadmin_name} uses Firewall purge, -20 HP to Hacker {hacker_name} \n ")
 
         elif sysadmin_val == 2:
-            #if sysadmin_hp <= 10:
-            #    print(f"Not enough HP, SysAdmin {sysadmin_name} sequence {i + 1} skipped \n")
-            #else:
             sysadmin_hp -= 10
             sysadmin_en += 20
             sysadmin_en = min(sysadmin_en, 100)
@@ -185,20 +179,6 @@ while game_running == 1:
         print(f"=========================== Round {turn_number} =========================== ")
         print(f"{hacker_name}: {hacker_hp} HP, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} HP, {sysadmin_en} energy\n")
 
-        hacker_sequence = input(f"{hacker_name}, enter your attack sequence: ")
-
-        while is_valid_sequence(hacker_sequence) == False:
-            print("Invalid sequence. Try again.")
-            hacker_sequence = input(f"{hacker_name}, enter your attack sequence: ")
-
-        sysadmin_sequence = input(f"{sysadmin_name}, enter your attack sequence: ")
-
-        while is_valid_sequence(sysadmin_sequence) == False:
-            print("Invalid sequence. Try again.")
-            sysadmin_sequence = input(f"{sysadmin_name}, enter your attack sequence: ")
-
-        print("")
-
         # phase 4 server event
         overheat_ctr -= 1
         if overheat_ctr == 0 and game_over(hacker_hp, sysadmin_hp) is None:
@@ -212,6 +192,20 @@ while game_running == 1:
             print("<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>")
             print("")
             overheat_ctr = 3
+
+        hacker_sequence = input(f"{hacker_name}, enter your attack sequence: ")
+
+        while is_valid_sequence(hacker_sequence) == False:
+            print("Invalid sequence. Try again.")
+            hacker_sequence = input(f"{hacker_name}, enter your attack sequence: ")
+
+        sysadmin_sequence = input(f"{sysadmin_name}, enter your attack sequence: ")
+
+        while is_valid_sequence(sysadmin_sequence) == False:
+            print("Invalid sequence. Try again.")
+            sysadmin_sequence = input(f"{sysadmin_name}, enter your attack sequence: ")
+
+        print("")
 
         attack_handling(hacker_sequence, sysadmin_sequence)
 
@@ -253,20 +247,6 @@ while game_running == 2:
         print(f"=========================== Round {turn_number} =========================== ")
         print(f"{hacker_name}: {hacker_hp} HP, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} HP, {sysadmin_en} energy\n")
 
-        hacker_sequence = input(f"Hacker {hacker_name}, enter your attack sequence: ")
-
-        while is_valid_sequence(hacker_sequence) == False:
-            print("Invalid sequence. Try again.")
-            hacker_sequence = input(f"Hacker {hacker_name}, enter your attack sequence: ")
-
-        sysadmin_sequence = input(f"Sysadmin {sysadmin_name}, enter your attack sequence: ")
-
-        while is_valid_sequence(sysadmin_sequence) == False:
-            print("Invalid sequence. Try again.")
-            sysadmin_sequence = input(f"Sysadmin {sysadmin_name}, enter your attack sequence: ")
-
-        print("")
-
         # phase 4 server event of rebooted game
         overheat_ctr -= 1
         
@@ -281,6 +261,20 @@ while game_running == 2:
             print("<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>")
             print("")
             overheat_ctr = 3
+
+        hacker_sequence = input(f"Hacker {hacker_name}, enter your attack sequence: ")
+
+        while is_valid_sequence(hacker_sequence) == False:
+            print("Invalid sequence. Try again.")
+            hacker_sequence = input(f"Hacker {hacker_name}, enter your attack sequence: ")
+
+        sysadmin_sequence = input(f"Sysadmin {sysadmin_name}, enter your attack sequence: ")
+
+        while is_valid_sequence(sysadmin_sequence) == False:
+            print("Invalid sequence. Try again.")
+            sysadmin_sequence = input(f"Sysadmin {sysadmin_name}, enter your attack sequence: ")
+
+        print("")
 
         attack_handling(hacker_sequence, sysadmin_sequence)
 
