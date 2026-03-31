@@ -231,7 +231,9 @@ while game_running == 1:
 
     else:
         print(f"You have to let it all go, {hacker_name}. Fear, doubt, and disbelief. Free your mind.")
+        time.sleep(3)
         game_running = 0
+        
 
 while game_running == 2: 
     turn_number = 1
