@@ -74,13 +74,13 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
                 print(f"Hacker {hacker_name} uses DDoS attack, -20 HP to SysAdmin {sysadmin_name}")
 
         elif hacker_val == 2:
-            if hacker_hp <= 10:
-                print(f"Not enough HP, Hacker {hacker_name} sequence {i + 1} skipped")
-            else:
-                hacker_hp -= 10
-                hacker_en += 20
-                hacker_en = min(hacker_en, 100)
-                print(f"Hacker {hacker_name} uses Phishing scam; +20 energy, -10 HP to self")
+            #if hacker_hp <= 10:
+            #    print(f"Not enough HP, Hacker {hacker_name} sequence {i + 1} skipped")
+            #else:
+            hacker_hp -= 10
+            hacker_en += 20
+            hacker_en = min(hacker_en, 100)
+            print(f"Hacker {hacker_name} uses Phishing scam; +20 energy, -10 HP to self")
 
         elif hacker_val == 3:
             if hacker_en <= 10:
@@ -104,13 +104,13 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
                     print(f"SysAdmin {sysadmin_name} uses Firewall purge, -20 HP to Hacker {hacker_name} \n ")
 
         elif sysadmin_val == 2:
-            if sysadmin_hp <= 10:
-                print(f"Not enough HP, SysAdmin {sysadmin_name} sequence {i + 1} skipped \n")
-            else:
-                sysadmin_hp -= 10
-                sysadmin_en += 20
-                sysadmin_en = min(sysadmin_en, 100)
-                print(f"SysAdmin {sysadmin_name} uses Reboot system, +20 energy, -10 HP to self \n")
+            #if sysadmin_hp <= 10:
+            #    print(f"Not enough HP, SysAdmin {sysadmin_name} sequence {i + 1} skipped \n")
+            #else:
+            sysadmin_hp -= 10
+            sysadmin_en += 20
+            sysadmin_en = min(sysadmin_en, 100)
+            print(f"SysAdmin {sysadmin_name} uses Reboot system, +20 energy, -10 HP to self \n")
 
         elif sysadmin_val == 3:
             if sysadmin_en <= 10:
@@ -120,6 +120,7 @@ def attack_handling(hacker_sequence, sysadmin_sequence):
                 hacker_hp -= 10
                 hacker_hp = max(0, hacker_hp)
                 print(f"SysAdmin {sysadmin_name} uses Trace route,", end=" ")
+
                 if hacker_stealth == True:
                     hacker_stealth = False
                     print(f"bypassing Hacker {hacker_name} Stealth Mode; -10 HP to {hacker_name} \n")
