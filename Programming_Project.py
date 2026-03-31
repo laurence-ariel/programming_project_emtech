@@ -179,6 +179,7 @@ while game_running == 1:
     print("Let the competition begin!\n")
 
     # Phase 3: attack phase
+    overheat_ctr = 3
     while hacker_hp > 0 and sysadmin_hp > 0:
         print(f"=========================== Round {turn_number} =========================== ")
         print(f"{hacker_name}: {hacker_hp} HP, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} HP, {sysadmin_en} energy\n")
@@ -197,14 +198,21 @@ while game_running == 1:
 
         print("")
 
-        attack_handling(hacker_sequence, sysadmin_sequence)
-
         # phase 4 server event
-        if turn_number % 3 == 0 and game_over(hacker_hp, sysadmin_hp) is None:
-            print("\nServer overheats, -10 HP to both sides\n")
+        overheat_ctr -= 1
+        if overheat_ctr == 0 and game_over(hacker_hp, sysadmin_hp) is None:
+            print("<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>")
+            print("")
+            print("Server overheats, -10 HP to both sides")
             hacker_hp -= 10
             sysadmin_hp -= 10
             print(f"Overheat report: {hacker_name}: {hacker_hp} HP, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} HP, {sysadmin_en} energy")
+            print("")
+            print("<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>")
+            print("")
+            overheat_ctr = 3
+
+        attack_handling(hacker_sequence, sysadmin_sequence)
 
         turn_number += 1
 
@@ -239,6 +247,7 @@ while game_running == 2:
     print(f"Current Hacker: {hacker_name} vs Current SysAdmin: {sysadmin_name}\n")
 
     # Phase 3: attack phase of rebooted game
+    overheat_ctr = 3
     while hacker_hp > 0 and sysadmin_hp > 0:
         print(f"=========================== Round {turn_number} =========================== ")
         print(f"{hacker_name}: {hacker_hp} HP, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} HP, {sysadmin_en} energy\n")
@@ -257,14 +266,22 @@ while game_running == 2:
 
         print("")
 
-        attack_handling(hacker_sequence, sysadmin_sequence)
-
         # phase 4 server event of rebooted game
-        if turn_number % 3 == 0 and game_over(hacker_hp, sysadmin_hp) is None:
+        overheat_ctr -= 1
+        
+        if overheat_ctr == 0 and game_over(hacker_hp, sysadmin_hp) is None:
+            print("<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>")
+            print("")
             print("Server overheats, -10 HP to both sides")
             hacker_hp -= 10
             sysadmin_hp -= 10
             print(f"Overheat report: {hacker_name}: {hacker_hp} HP, {hacker_en} energy || {sysadmin_name}: {sysadmin_hp} HP, {sysadmin_en} energy")
+            print("")
+            print("<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>")
+            print("")
+            overheat_ctr = 3
+
+        attack_handling(hacker_sequence, sysadmin_sequence)
 
         turn_number += 1
 
